@@ -4,6 +4,7 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 const saveBtn = document.getElementById("jsSave");
+const clearBtn = document.getElementById("jsClear");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
@@ -69,7 +70,6 @@ function handleColorClick(event) {
 }
 
 function handleRangeChange(event) {
-    console.log(event.target.value);
     const size = event.target.value;
     ctx.lineWidth = size;
 }
@@ -80,7 +80,7 @@ function handleModeClick() {
         mode.innerHTML = "Fill";
     } else {
         filling = true;
-        mode.innerHTML = "PAINT";
+        mode.innerHTML = "Paint";
     }
 }
 
@@ -88,9 +88,17 @@ function handleSaveClick() {
     const image = canvas.toDataURL();
     const link = document.createElement("a");
 
-    link.href = image;
-    link.download = "PaintJS{^O^]";
-    link.click();
+    if(window.confirm("저장하시겠습니까?")) {
+
+        link.href = image;
+        link.download = "PaintJS{^O^]";
+        link.click();
+    }
+}
+
+function handleClearClick() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 }
 
 Array.from(colors).forEach(color => 
@@ -107,4 +115,8 @@ if(mode) {
 
 if(saveBtn) {
     saveBtn.addEventListener("click", handleSaveClick);
+}
+
+if(clearBtn) {
+    clearBtn.addEventListener("click", handleClearClick);
 }
